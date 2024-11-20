@@ -44,16 +44,20 @@ int main (int argc, char **argv){
     return 0;
 }
 
-enum killing_state turtle_killer(std::string turtle_name, ros::NodeHandle& NodeHandler_t);
+enum killing_state turtle_killer(std::string turtle_name, ros::NodeHandle& NodeHandler_t)
 {
     //define client with the data type of turtlesim::kill and passing to it the service name /kill
     ros::ServiceClient turtle_killer_client = NodeHandler_t.serviceClient<turtlesim::Kill>("/kill");
     turtlesim::Kill node_killer_request;
-    node_killer_request.name=turtle_name;
+    node_killer_request.request.name=turtle_name;
     //call killer service
-    turtle_killer_client.call(node_killer_request);
-
-    return killed;
+    if (turtle_killer_client.call(node_killer_request)){
+    	return killed;
+    	}
+    else{
+        ROS_ERROR("Failed to call /kill service.");
+        return notkilled;
+    }
 
 }
 
@@ -63,11 +67,16 @@ enum spawn_state turtle_spawn(float x, float y, float theta, std::string turtle_
     ros::ServiceClient turtle_spawn_client = NodeHandler_t.serviceClient<turtlesim::Spawn>("/spawn");
     //varible of this type to set paramters before turtle become alive
 	turtlesim::Spawn spawn_turtle_t;
-    spawn_turtle_t.x=x;
-    spawn_turtle_t.y=y;
-    spawn_turtle_t.theta=theta;
-    spawn_turtle_t.name=turtle_name;
+    spawn_turtle_t.request.x=x;
+    spawn_turtle_t.request.y=y;
+    spawn_turtle_t.request.theta=theta;
+    spawn_turtle_t.request.name=turtle_name;
     // now give the turtle live !
-    turtle_client.call(spawn_turtle_t);
-    return spawn_Done;
+    if (turtle_spawn_client.call(spawn_turtle_t)){
+    	return spawn_Done;
+    	}
+    else {
+        ROS_ERROR("Failed to call /spawn service.");
+        return spawn_failed;
+    }
 }
