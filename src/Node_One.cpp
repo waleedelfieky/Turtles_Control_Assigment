@@ -2,16 +2,19 @@
 #include "turtlesim/Pose.h"
 #include "std_msgs/String.h"
 #include "geometry_msgs/Twist.h"
-#include "turtlesim/Kill"
+#include "turtlesim/Kill.h"
+#include <turtlesim/Spawn.h>
+
+
 enum killing_state{
     killed,
     notkilled
-}
+};
 
 enum spawn_state{
     spawn_Done,
     spawn_failed
-}
+};
 
 
 
@@ -19,7 +22,7 @@ enum spawn_state{
 
 
 enum killing_state turtle_killer(std::string turtle_name, ros::NodeHandle& NodeHandler_t);
-enum spawn_state turtle_spawn(float32 x, float32 y, float32 theta, std::string turtle_name, ros::NodeHandle& NodeHandler_t);
+enum spawn_state turtle_spawn(float x, float y, float theta, std::string turtle_name, ros::NodeHandle& NodeHandler_t);
 
 //define struct for the turtles data
 
@@ -55,9 +58,9 @@ enum killing_state turtle_killer(std::string turtle_name, ros::NodeHandle& NodeH
 }
 
 
-enum spawn_state turtle_spawn(float32 x, float32 y, float32 theta, std::string turtle_name, ros::NodeHandle& NodeHandler_t){
+enum spawn_state turtle_spawn(float x, float y, float theta, std::string turtle_name, ros::NodeHandle& NodeHandler_t){
     // define service client with data type of spawn and assoicated with spawn service    
-    ros::ServiceClient turtle_spawn_client = n.serviceClient<turtlesim::Spawn>("/spawn");
+    ros::ServiceClient turtle_spawn_client = NodeHandler_t.serviceClient<turtlesim::Spawn>("/spawn");
     //varible of this type to set paramters before turtle become alive
 	turtlesim::Spawn spawn_turtle_t;
     spawn_turtle_t.x=x;
