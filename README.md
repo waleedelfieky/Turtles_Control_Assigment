@@ -2,7 +2,8 @@
 
 this Assignment purpose is to drive two turtles in a frame with user interaction so the user can decide which turtle to control upon and then in which linear and angular velcoites will they be directed
 <div>
-<img align="left" src="[https://github.com/waleedelfieky/yocto-vsomeip-project/assets/126036494/158df6f5-4402-406b-bfde-e41f1efe758c](https://github.com/user-attachments/assets/106fdca0-3b16-425f-995d-1c85a0e64ce1)" alt="STL Notes Logo" width="350">
+<img align="left" src="https://github.com/waleedelfieky/yocto-vsomeip-project/assets/126036494/158df6f5-4402-406b-bfde-e41f1efe758c" alt="STL Notes Logo" width="350">
+
 
 # *Yocto PROJECT: A Summary Guide to Yocto project this project Integrated the VSOMEIP middleware layer.*
 
