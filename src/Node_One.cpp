@@ -57,7 +57,7 @@ int main (int argc, char **argv){
     turtle_spawn(2,2,0,"turtleOne",NodeHandler_t);
     turtle_spawn(3,6,0,"turtleTwo",NodeHandler_t);
     //start node work
-    controlTurtle("turtleOne", "turtleTwo", 1, NodeHandler_t){
+    controlTurtle("turtleOne", "turtleTwo", 1, NodeHandler_t);
 
     return 0;
 }
