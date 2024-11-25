@@ -40,7 +40,7 @@ elments to be control are two turtles and user will be asked which one to contro
 ## overview-of-system:
 
 
-![2](https://github.com/user-attachments/assets/e494c0ac-0f69-436a-bb65-0bec27a4422f)
+![image](https://github.com/user-attachments/assets/09a4b0dd-4c25-41c7-b6e1-0c75a8135067)
 
 
 
