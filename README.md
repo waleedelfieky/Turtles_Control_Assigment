@@ -5,7 +5,7 @@ this Assignment purpose is to drive two turtles in a frame with user interaction
 
 ![1](https://github.com/user-attachments/assets/f40b2cd4-be52-4b43-b66a-a4c52167df37)
 
-# *Yocto PROJECT: A Summary Guide to Yocto project this project Integrated the VSOMEIP middleware layer.*
+# *ROS Simple Project: Control Two Turtles with Simple conditions*
 
 [![GitHub stars](https://img.shields.io/github/stars/waleedelfieky/Turtles_Control_Assigment?style=social)](https://github.com/waleedelfieky/Turtles_Control_Assigment/stargazers) 
 [![GitHub forks](https://img.shields.io/github/forks/waleedelfieky/Turtles_Control_Assigment?style=social)](https://github.com/waleedelfieky/Turtles_Control_Assigment/network/members) 
