@@ -1,7 +1,7 @@
 #include "ros/ros.h"
 #include "turtlesim/Pose.h"
 #include "geometry_msgs/Twist.h"
-#include <chrono>
+
 
 
 /*
@@ -54,24 +54,12 @@ int main (int argc, char **argv){
 
     // Subscribers for turtles' poses
     ros::Subscriber turtle1_sub = Node_Two_handler.subscribe("/turtle1/pose", 10, turtle1PoseCallback);
-
     ros::Subscriber turtle2_sub = Node_Two_handler.subscribe("/turtle2/pose", 10, turtle2PoseCallback);
-    // Define a rate (e.g., 10 Hz, 0.1-second delay per iteration)
-    ros::Rate loop_rate(10);
-
-    while (ros::ok()) {
-        // Add any additional logic here if needed
-        
-        // Callbacks are processed
-        ros::spinOnce();
-        
-        // Sleep to maintain loop rate
-        loop_rate.sleep();
-    }
+    
     // std::cout<<"turtle_one x: "<<turtles[0].pose.x<<" and y: "<<turtles[0].pose.y<<" and theta: "<< turtles[0].pose.theta<<std::endl;
     // std::cout<<"turtle_two x: "<<turtles[1].pose.x<<" and y: "<<turtles[1].pose.y<<" and theta: "<< turtles[1].pose.theta<<std::endl;
-    // // Spin to process callbacks
-    //ros::spin();
+    // Spin to process callbacks
+    ros::spin();
 
     return 0;
 }
