@@ -130,9 +130,15 @@ void controlTurtle(const std::string& turtle1_name, const std::string& turtle2_n
         double linear_velocity, angular_velocity;
 
         // Ask the user which turtle to control
-        std::cout << "Which turtle do you want to control? (" << turtle1_name << "/" << turtle2_name << "): ";
+        std::cout << "Which turtle do you want to control? (" << turtle1_name << "/" << turtle2_name << "): or q to exit ";
         // get this data to our varibale
         std::cin >> selected_turtle;
+        
+        //check if it's exit command
+        if (selected_turtle == "q") {
+            std::cout << "Exiting program. Goodbye!" << std::endl;
+            break;
+        }
 
         // Validate user input to check if he entered a non valid name
         if (selected_turtle != turtle1_name && selected_turtle != turtle2_name) {
