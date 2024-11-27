@@ -54,8 +54,8 @@ int main (int argc, char **argv){
     //initlize node handler
     ros::NodeHandle NodeHandler_t;
     turtle_killer("turtle1",NodeHandler_t);
-    turtle_spawn(2,2,0,"turtleOne",NodeHandler_t);
-    turtle_spawn(3,6,0,"turtleTwo",NodeHandler_t);
+    turtle_spawn(5,2,0,"turtleOne",NodeHandler_t);
+    turtle_spawn(2,2,0,"turtleTwo",NodeHandler_t);
     //start node work
     controlTurtle("turtleOne", "turtleTwo", 1, NodeHandler_t);
 
