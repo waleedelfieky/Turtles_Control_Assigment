@@ -22,22 +22,24 @@ TurtleData turtles[2]{};
 void turtle1PoseCallback(const turtlesim::Pose::ConstPtr& msg);
 // Callback function for Turtle2's pose
 void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg);
-// relative distance checker
-//void turtle_relative_distance_checker(const turtlesim::Pose::ConstPtr& turtle1_pose,const turtlesim::Pose::ConstPtr& turtle2_pose, float threshold);
 /*==============================================================*/
+//stop turtle function
+void stopTurtle(const std::string& turtle_name, ros::NodeHandle& NodeHandler_t);
+// relative distance checker
+void turtle_relative_distance_checker(const turtlesim::Pose::ConstPtr& turtle1_pose,const turtlesim::Pose::ConstPtr& turtle2_pose, float threshold);
 
-
+ros::NodeHandle Node_Two_handler;
 
 int main (int argc, char **argv){
     // Initialize our ROS node
     ros::init(argc, argv, "Node_two");
     //intlilize our handler
-    ros::NodeHandle Node_Two_handler;
-
     // Subscribers for turtles' poses
     ros::Subscriber turtle1_sub = Node_Two_handler.subscribe("/turtleOne/pose", 10, turtle1PoseCallback);
     ros::Subscriber turtle2_sub = Node_Two_handler.subscribe("/turtleTwo/pose", 10, turtle2PoseCallback);
     //since we have the pose now we want to check the relative distance first
+    turtle_relative_distance_checker(turtles[0].pose ,turtles[1].pose, 1)
+
 
     ros::spin();
 
@@ -70,20 +72,43 @@ void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
     }
     std::cout<<"turtle_two is: " <<turtles[1].isMoving<<std::endl;
 }
+/*==============================================================*/
+/*==============================================================*/
+//function to stop the turtle that is moving by passing the turtle name along with the node handeler
+void stopTurtle(const std::string& turtle_name, ros::NodeHandle& NodeHandler_t)
+{
+    ros::Publisher pub_turtle = NodeHandler_t.advertise<geometry_msgs::Twist>("/" + turtle_name + "/cmd_vel", 10);
+    geometry_msgs::Twist velocity;
+    //as velcity data structure contain two structs one for linear velocity and other for angular velocity
+    velocity.linear.x = 0;
+    velocity.angular.z = 0;
+    //now publish this velcoities to our the topic cmd which will publish this data to the turtle afterwards
+    pub_turtle.publish(velocity);
 
+}
 /*==============================================================*/
 /*==============================================================*/
 
-// void turtle_relative_distance_checker(const turtlesim::Pose::ConstPtr& turtle1_pose,const turtlesim::Pose::ConstPtr& turtle2_pose, float threshold)
-// {
-//     /*calcualte distance*/
+void turtle_relative_distance_checker(const turtlesim::Pose::ConstPtr& turtle1_pose,const turtlesim::Pose::ConstPtr& turtle2_pose, float threshold)
+{
+    // Calculate the distance between the two turtles
+    float dx = turtle2_pose->x - turtle1_pose->x;
+    float dy = turtle2_pose->y - turtle1_pose->y;
+    float distance = std::sqrt(dx * dx + dy * dy);
 
-//     /*if postive check threehold T1 to T2 as T1 is the one that is behind*/
+    // Check if the distance exceeds the threshold
+    if (distance > threshold) {
 
-//     /*if negative convert first the number to be postive then
-//     check threehold from T2 to T1
-//     */
-// }
+        if(turtles[0].isMoving=true){
+            stopTurtle("turtleOne", Node_Two_handler)
+
+        }
+        else if(turtles[1].isMoving=true){
+            stopTurtle("turtleTwo", Node_Two_handler)
+
+        }
+    } 
+}
 
 /*==============================================================*/
 /*==============================================================*/
