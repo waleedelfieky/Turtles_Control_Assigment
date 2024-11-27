@@ -22,29 +22,45 @@ TurtleData turtles[2]{};
 void turtle1PoseCallback(const turtlesim::Pose::ConstPtr& msg);
 // Callback function for Turtle2's pose
 void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg);
-/*==============================================================*/
+
 //stop turtle function
-void stopTurtle(const std::string& turtle_name, ros::NodeHandle& NodeHandler_t);
-// relative distance checker
-void turtle_relative_distance_checker(const turtlesim::Pose::ConstPtr& turtle1_pose,const turtlesim::Pose::ConstPtr& turtle2_pose, float threshold);
+void stopTurtle(const std::string& turtle_name, ros::Publisher& publisher, turtlesim::Pose turtle_pose);
 
-ros::NodeHandle Node_Two_handler;
+//relative distance checker
+void turtle_relative_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Pose turtle2_pose, float threshold, ros::Publisher& publisher_one,ros::Publisher& publisher_two);
+/*==============================================================*/
 
-int main (int argc, char **argv){
+
+
+int main(int argc, char** argv) {
     // Initialize our ROS node
     ros::init(argc, argv, "Node_two");
-    //intlilize our handler
+
+    // Initialize our handler
+    ros::NodeHandle Node_Two_handler;
+
     // Subscribers for turtles' poses
     ros::Subscriber turtle1_sub = Node_Two_handler.subscribe("/turtleOne/pose", 10, turtle1PoseCallback);
     ros::Subscriber turtle2_sub = Node_Two_handler.subscribe("/turtleTwo/pose", 10, turtle2PoseCallback);
-    //since we have the pose now we want to check the relative distance first
-    turtle_relative_distance_checker(turtles[0].pose ,turtles[1].pose, 1)
+    ros::Publisher pub_turtle_one = Node_Two_handler.advertise<geometry_msgs::Twist>("/turtleOne/cmd_vel", 10);
+    ros::Publisher pub_turtle_two = Node_Two_handler.advertise<geometry_msgs::Twist>("/turtleTwo/cmd_vel", 10);
 
+    // Define a loop rate (e.g., 10 Hz)
+    ros::Rate loop_rate(100);
 
-    ros::spin();
+    while (ros::ok()) {
+        turtle_relative_distance_checker(turtles[0].pose,turtles[1].pose, 1.5, pub_turtle_one, pub_turtle_two);
+
+        // Process subscriber callbacks
+        ros::spinOnce();
+
+        // Sleep to maintain the loop rate
+        loop_rate.sleep();
+    }
 
     return 0;
 }
+
 
 /*==============================================================*/
 /*==============================================================*/
@@ -56,7 +72,6 @@ void turtle1PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
     else {
         turtles[0].isMoving=true;
     }
-    std::cout<<"turtle_one is: " <<turtles[0].isMoving<<std::endl;
 }
 /*==============================================================*/
 /*==============================================================*/
@@ -70,48 +85,50 @@ void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
     else {
         turtles[1].isMoving=true;
     }
-    std::cout<<"turtle_two is: " <<turtles[1].isMoving<<std::endl;
-}
-/*==============================================================*/
-/*==============================================================*/
-//function to stop the turtle that is moving by passing the turtle name along with the node handeler
-void stopTurtle(const std::string& turtle_name, ros::NodeHandle& NodeHandler_t)
-{
-    ros::Publisher pub_turtle = NodeHandler_t.advertise<geometry_msgs::Twist>("/" + turtle_name + "/cmd_vel", 10);
-    geometry_msgs::Twist velocity;
-    //as velcity data structure contain two structs one for linear velocity and other for angular velocity
-    velocity.linear.x = 0;
-    velocity.angular.z = 0;
-    //now publish this velcoities to our the topic cmd which will publish this data to the turtle afterwards
-    pub_turtle.publish(velocity);
 
 }
+
 /*==============================================================*/
 /*==============================================================*/
 
-void turtle_relative_distance_checker(const turtlesim::Pose::ConstPtr& turtle1_pose,const turtlesim::Pose::ConstPtr& turtle2_pose, float threshold)
+
+void turtle_relative_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Pose turtle2_pose, float threshold, ros::Publisher& publisher_one,ros::Publisher& publisher_two)
 {
-    // Calculate the distance between the two turtles
-    float dx = turtle2_pose->x - turtle1_pose->x;
-    float dy = turtle2_pose->y - turtle1_pose->y;
-    float distance = std::sqrt(dx * dx + dy * dy);
 
-    // Check if the distance exceeds the threshold
-    if (distance > threshold) {
+	//std::cout<<"t1 x: "<< turtle1_pose.x<<" t1 y: "<<turtle1_pose.y<<" t1 theta: "<<turtle1_pose.theta<<std::endl;
+	//std::cout<<"t1 x: "<< turtle2_pose.x<<" t1 y: "<<turtle1_pose.y<<" t2 theta: "<<turtle2_pose.theta<<std::endl;
+	// Calculate the distance between the two turtles
+        float dx = turtle2_pose.x - turtle1_pose.x;
+        float dy = turtle2_pose.y - turtle1_pose.y;
+        float distance = std::sqrt(dx * dx + dy * dy);
+        if (distance <= threshold) {
+        	if(turtles[0].isMoving==true){
+        		std::cout<<"program is stopping T1"<<std::endl;
+            		stopTurtle("turtleOne", publisher_one, turtle1_pose);
+        	}
+        	else if(turtles[1].isMoving==true){
+        	        std::cout<<"program is stopping T2"<<std::endl;
+            		stopTurtle("turtleTwo", publisher_two, turtle2_pose);
 
-        if(turtles[0].isMoving=true){
-            stopTurtle("turtleOne", Node_Two_handler)
-
-        }
-        else if(turtles[1].isMoving=true){
-            stopTurtle("turtleTwo", Node_Two_handler)
-
-        }
+        	}
     } 
 }
 
+
 /*==============================================================*/
 /*==============================================================*/
+
+void stopTurtle(const std::string& turtle_name, ros::Publisher& publisher, turtlesim::Pose turtle_pose)
+{
+    geometry_msgs::Twist velocity;
+    //as velcity data structure contain two structs one for linear velocity and other for angular velocity
+    velocity.linear.x = -turtle_pose.linear_velocity*0.1;
+    velocity.angular.z = -turtle_pose.angular_velocity*0.1;
+
+    //now publish this velcoities to our the topic cmd which will publish this data to the turtle afterwards
+    publisher.publish(velocity);
+
+}
 
 /*function one that takes the turtle names and fill in the array with the data of each turtle*/
 

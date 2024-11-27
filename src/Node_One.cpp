@@ -54,10 +54,21 @@ int main (int argc, char **argv){
     //initlize node handler
     ros::NodeHandle NodeHandler_t;
     turtle_killer("turtle1",NodeHandler_t);
-    turtle_spawn(5,2,0,"turtleOne",NodeHandler_t);
+    turtle_spawn(5.5,2,0,"turtleOne",NodeHandler_t);
     turtle_spawn(2,2,0,"turtleTwo",NodeHandler_t);
     //start node work
-    controlTurtle("turtleOne", "turtleTwo", 1, NodeHandler_t);
+    // Define loop rate (e.g., 10 Hz)
+    ros::Rate loop_rate(10);
+    // Start the control loop
+    while (ros::ok()) {
+        controlTurtle("turtleOne", "turtleTwo", 1, NodeHandler_t);
+
+        // Sleep for the remaining time to maintain loop rate
+        loop_rate.sleep();
+
+        // Process callbacks if any (for subscriber or service functionality)
+        ros::spinOnce();
+    }
 
     return 0;
 }
