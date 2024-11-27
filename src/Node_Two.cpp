@@ -54,7 +54,7 @@ void turtle1PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
     else {
         turtles[0].isMoving=true;
     }
-    std::cout<<"turtle_one is: " <<turtles[0].isMoving<<std::endl
+    std::cout<<"turtle_one is: " <<turtles[0].isMoving<<std::endl;
 }
 /*==============================================================*/
 /*==============================================================*/
@@ -68,7 +68,7 @@ void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
     else {
         turtles[1].isMoving=true;
     }
-    std::cout<<"turtle_one is: " <<turtles[1].isMoving<<std::endl
+    std::cout<<"turtle_two is: " <<turtles[1].isMoving<<std::endl;
 }
 
 /*==============================================================*/
