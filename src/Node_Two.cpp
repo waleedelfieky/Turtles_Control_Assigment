@@ -53,8 +53,8 @@ int main (int argc, char **argv){
     ros::NodeHandle Node_Two_handler;
 
     // Subscribers for turtles' poses
-    ros::Subscriber turtle1_sub = Node_Two_handler.subscribe("/turtle1/pose", 10, turtle1PoseCallback);
-    ros::Subscriber turtle2_sub = Node_Two_handler.subscribe("/turtle2/pose", 10, turtle2PoseCallback);
+    ros::Subscriber turtle1_sub = Node_Two_handler.subscribe("/turtleOne/pose", 10, turtle1PoseCallback);
+    ros::Subscriber turtle2_sub = Node_Two_handler.subscribe("/turtleTwo/pose", 10, turtle2PoseCallback);
     
     // std::cout<<"turtle_one x: "<<turtles[0].pose.x<<" and y: "<<turtles[0].pose.y<<" and theta: "<< turtles[0].pose.theta<<std::endl;
     // std::cout<<"turtle_two x: "<<turtles[1].pose.x<<" and y: "<<turtles[1].pose.y<<" and theta: "<< turtles[1].pose.theta<<std::endl;
