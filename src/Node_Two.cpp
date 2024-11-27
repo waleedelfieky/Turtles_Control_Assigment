@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     ros::Publisher pub_turtle_two = Node_Two_handler.advertise<geometry_msgs::Twist>("/turtleTwo/cmd_vel", 10);
 
     // Define a loop rate (e.g., 10 Hz)
-    ros::Rate loop_rate(100);
+    ros::Rate loop_rate(1000000);
 
     while (ros::ok()) {
         turtle_relative_distance_checker(turtles[0].pose,turtles[1].pose, 1.5, pub_turtle_one, pub_turtle_two);
@@ -122,8 +122,8 @@ void stopTurtle(const std::string& turtle_name, ros::Publisher& publisher, turtl
 {
     geometry_msgs::Twist velocity;
     //as velcity data structure contain two structs one for linear velocity and other for angular velocity
-    velocity.linear.x = -turtle_pose.linear_velocity*0.1;
-    velocity.angular.z = -turtle_pose.angular_velocity*0.1;
+    velocity.linear.x = -turtle_pose.linear_velocity*0.4;
+    velocity.angular.z = -turtle_pose.angular_velocity*0.4;
 
     //now publish this velcoities to our the topic cmd which will publish this data to the turtle afterwards
     publisher.publish(velocity);
