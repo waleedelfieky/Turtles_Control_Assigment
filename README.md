@@ -1,6 +1,7 @@
 # Turtles_Control_Assigment
 
-this Assignment purpose is to drive two turtles in a frame with user interaction so the user can decide which turtle to control upon and then in which linear and angular velcoites will they be directed
+This assignment aims to control two turtles within a frame through user interaction. The user can decide which turtle to control and specify the linear and angular velocities for its movement.
+
 <div>
 
 ![1](https://github.com/user-attachments/assets/f40b2cd4-be52-4b43-b66a-a4c52167df37)
@@ -27,7 +28,7 @@ this Assignment purpose is to drive two turtles in a frame with user interaction
 
 ## Basic Control Turtles Project.
 
-elments to be control are two turtles and user will be asked which one to control and in which linear and angular veclocites will be commanded to the robot
+The elements to be controlled are two turtles. The user will be prompted to select which turtle to control and specify the linear and angular velocities to command the robot.
   
 ## Table of Contents:
 
@@ -40,15 +41,25 @@ elments to be control are two turtles and user will be asked which one to contro
 ## overview-of-system:
 
 
-![image](https://github.com/user-attachments/assets/09a4b0dd-4c25-41c7-b6e1-0c75a8135067)
-
+![image](https://github.com/user-attachments/assets/42658046-decb-4052-82ca-24026955f58b)
 
 
 ## Node_One:
+Node one output
+![image](https://github.com/user-attachments/assets/055f856e-7fa6-4359-8eb0-af4e63ee0bbc)
+The image shows the final output of the node's code. In this node, the original turtle has been removed, and two new turtles have been spawned in the environment. The user is prompted to choose which turtle to control and specify the desired velocity. The selected turtle then moves at the specified velocity for 1 second, as shown in the following picture.
+![image](https://github.com/user-attachments/assets/77c105b2-2f62-4208-a783-bf0d7a2c8614)
+
 
 ## Node_Two:
+This node generates the final output. It implements a control mechanism where the two turtles move within a specified frame and stop if they get too close to each other.
 
-## video:
+## video for the final output:
+
+
+https://github.com/user-attachments/assets/904ba588-38c7-4d93-acd3-561653c2a9b1
+
+
 
 ## Contact Information:
 
