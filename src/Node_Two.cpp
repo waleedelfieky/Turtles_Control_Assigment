@@ -27,7 +27,7 @@ void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg);
 void stopTurtle(const std::string& turtle_name, ros::Publisher& publisher, turtlesim::Pose turtle_pose);
 
 //relative distance checker
-void turtle_relative_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Pose turtle2_pose, float threshold, ros::Publisher& publisher_one,ros::Publisher& publisher_two);
+void turtle_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Pose turtle2_pose, float threshold, ros::Publisher& publisher_one,ros::Publisher& publisher_two);
 /*==============================================================*/
 
 
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     ros::Rate loop_rate(1000000);
 
     while (ros::ok()) {
-        turtle_relative_distance_checker(turtles[0].pose,turtles[1].pose, 1.5, pub_turtle_one, pub_turtle_two);
+        turtle_distance_checker(turtles[0].pose,turtles[1].pose, 1.5, pub_turtle_one, pub_turtle_two);
 
         // Process subscriber callbacks
         ros::spinOnce();
@@ -92,7 +92,7 @@ void turtle2PoseCallback(const turtlesim::Pose::ConstPtr& msg) {
 /*==============================================================*/
 
 
-void turtle_relative_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Pose turtle2_pose, float threshold, ros::Publisher& publisher_one,ros::Publisher& publisher_two)
+void turtle_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Pose turtle2_pose, float threshold, ros::Publisher& publisher_one,ros::Publisher& publisher_two)
 {
 
 	//std::cout<<"t1 x: "<< turtle1_pose.x<<" t1 y: "<<turtle1_pose.y<<" t1 theta: "<<turtle1_pose.theta<<std::endl;
@@ -103,15 +103,20 @@ void turtle_relative_distance_checker(turtlesim::Pose turtle1_pose,turtlesim::Po
         float distance = std::sqrt(dx * dx + dy * dy);
         if (distance <= threshold) {
         	if(turtles[0].isMoving==true){
-        		std::cout<<"program is stopping T1"<<std::endl;
             		stopTurtle("turtleOne", publisher_one, turtle1_pose);
         	}
         	else if(turtles[1].isMoving==true){
-        	        std::cout<<"program is stopping T2"<<std::endl;
+
             		stopTurtle("turtleTwo", publisher_two, turtle2_pose);
 
         	}
-    } 
+   	 }
+   	 if(turtle1_pose.x>10 || turtle1_pose.y>10 || turtle1_pose.x<1 || turtle1_pose.y<1){
+   	 	stopTurtle("turtleOne", publisher_one, turtle1_pose);
+   	 }
+   	 if(turtle2_pose.x>10 || turtle2_pose.y>10 || turtle2_pose.x<1 || turtle2_pose.y<1){
+   	 	stopTurtle("turtleTwo", publisher_two, turtle2_pose);
+   	 }
 }
 
 
